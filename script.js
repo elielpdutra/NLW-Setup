@@ -1,13 +1,27 @@
-const form = document.querySelector("#form-habits");
-const nlwSetup = new NLWSetup(form);
+const form = document.querySelector("#form-habits")
+const nlwSetup = new NLWSetup(form)
+const button = document.querySelector("header button")
 
-const data = {
-  run: ["01-01", "01-03", "01-04"],
-  water: ["01-01", "01-02", "01-05", "01-06"],
-  food: ["01-02", "01-04"],
-  journal: ["01-03", "01-05"],
-  takePills: ["01-01", "01-02", "01-05"],
+button.addEventListener("click", add)
+form.addEventListener("change", save)
+
+function add() {
+  const today = new Date().toLocaleDateString("pt-br").slice(0, -5)
+  const dayExists = nlwSetup.dayExists(today)
+
+  if (dayExists) {
+    alert("⚠️ Dia já incluso ⚠️")
+    return
+  }
+  alert("Adicionado com sucesso ✅")
+  nlwSetup.addDay(today)
 }
 
-nlwSetup.setData(data);
-nlwSetup.load();
+function save() {
+  localStorage.setItem("HabitsNlwSetup", JSON.stringify(nlwSetup.data))
+  localStorage.getItem("")
+}
+
+const data = JSON.parse(localStorage.getItem("HabitsNlwSetup")) || {}
+nlwSetup.setData(data)
+nlwSetup.load()
